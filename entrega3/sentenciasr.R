@@ -1,91 +1,198 @@
-# Histogramas
+#Importo la base de datos
+library(readxl)
+#Cambiar el path a donde este guardado
+databaseactualizada <- read_excel("Documents/Probabilidad_y_estadistica_1/Proyecto-Probabilidad/entrega3/databaseactualizada.xlsx")
 
-# Inflacion
-hist(databaseactualizada$Ic, xlab = "Porcentaje", ylab = "Frecuencia", ylim = c(0,40), main = "Inflación de Colombia por trimestre")
+# Listas de mediciones por trimestre guardadas como variables
+inflacionCol = databaseactualizada$Ic
+exportacionesUSA = databaseactualizada$Eu
+pibUSA = databaseactualizada$Pu
+importacionesUSA = databaseactualizada$Imu
+pibCol = databaseactualizada$Pc
+importacionesCol = databaseactualizada$Imc
+exportacionesCol = databaseactualizada$Ec
 
-# Exportaciones USA
-hist(databaseactualizada$Eu, xlab = "Valor en millones de dolares", ylab = "Frecuencia", ylim = c(0,20), main = "Exportaciones de Estados Unidos por trimestre")
+n = length(inflacionCol)
 
-# PIB USA
-hist(databaseactualizada$Pu, xlab = "Valor en millones de dolares", ylab = "Frecuencia", ylim = c(0,20), main = "PIB de Estados Unidos por trimestre")
+# Distribuciones de los datos
 
-# Importaciones USA
-hist(databaseactualizada$Imu, xlab = "Valor en millones de dolares", ylab = "Frecuencia", ylim = c(0,20), main = "Importaciones de Estados Unidos por trimestre")
+  # INFLACION DE COLOMBIA
+  MMinflacionCol = mean(inflacionCol)
+  VARinflacionCol = var(inflacionCol)
+  SDinflacionCol = sd(inflacionCol)
+  MINinflacionCol = min(inflacionCol)
+  MAXinflacionCol = max(inflacionCol)
+  
+  #EXPORTACIONES DE COLOMBIA
+  MMexportacionesCol = mean(exportacionesCol)
+  VARexportacionesCol = var(exportacionesCol)
+  SDexportacionesCol = sd(exportacionesCol)
+  MINexportacionesCol = min(exportacionesCol)
+  MAXexportacionesCol = max(exportacionesCol)
+  
+  #EXPORTACIONES DE ESTADOS UNIDOS
+  MMexportacionesUSA = mean(exportacionesUSA)
+  VARexportacionesUSA = var(exportacionesUSA)
+  SDexportacionesUSA = sd(exportacionesUSA)
+  MINexportacionesUSA = min(exportacionesUSA)
+  MAXexportacionesUSA = max(exportacionesUSA)
+  
+  # IMPORTACIONES DE COLOMBIA
+  MMimportacionesCol = mean(importacionesCol)
+  VARimportacionesCol = var(importacionesCol)
+  SDimportacionesCol = sd(importacionesCol)
+  MINimportacionesCol = min(importacionesCol)
+  MAXimportacionesCol = max(importacionesCol)
+  
+  # IMPORTACIONES DE ESTADOS UNIDOS
+  MMimportacionesUSA = mean(importacionesUSA)
+  VARimportacionesUSA = var(importacionesUSA)
+  SDimportacionesUSA = sd(importacionesUSA)
+  MINimportacionesUSA = min(importacionesUSA)
+  MAXimportacionesUSA = max(importacionesUSA)
+  
+  # PIB DE COLOMBIA
+  MMpibCol = mean(pibCol)
+  VARpibCol = var(pibCol)
+  SDpibCol = sd(pibCol)
+  MINpibCol = min(pibCol)
+  MAXpibCol = max(pibCol)
+  
+  # PIB DE ESTADOS UNIDOS
+  MMpibUSA = mean(pibUSA)
+  VARpibUSA = var(pibUSA)
+  SDpibUSA = sd(pibUSA)
+  MINpibUSA = min(pibUSA)
+  MAXpibUSA = max(pibUSA)
 
-# Desempleo COL
-hist(databaseactualizada$Pc, xlab = "Valor en millones de pesos", ylab = "Frecuencia", ylim = c(0,20), main = "PIB de Colombia por trimestre")
+# Graficas, intervalos de confianza y pruebas de hipotesis de las variables, para los intervalos de confianza supondremos que las variables tienen distribución normal
+  alpha = 0.05
+  z_alphasup = qnorm(alpha, lower.tail = FALSE)
+  z_alphainf = qnorm(alpha, lower.tail = TRUE)
+  z_alpha2 = qnorm(alpha/2, lower.tail = FALSE)
+  
+  # INFLACION DE COLOMBIA
+  
+    # Histograma
+    hist(inflacionCol, xlab = "Porcentaje", ylab = "Frecuencia", ylim = c(0,40), main = "Inflación de Colombia por trimestre")
+    # Diagrama de caja
+    boxplot(inflacionCol, horizontal = TRUE, xlab = "Porcentaje", main = "Inflación de Colombia por trimestre")
+    # Intervalo de confianza del 95% para la media de la inflacion de colombia por trimestre
+    SEinflacionCol = SDinflacionCol/sqrt(n)
+    LSinflacionCol = MMinflacionCol + z_alpha2*SEinflacionCol
+    LIinflacionCol = MMinflacionCol - z_alpha2*SEinflacionCol
+    #Prueba de hipotesis para determinar si el nivel de inflacion esta por encima del 4% con un nivel de significancia de 0.05
+    H0inflacionCol = 4
+    ZinflacionCol = (MMinflacionCol-H0inflacionCol)/SEinflacionCol
+    #Nuestro estadistico de prueba esta fuera de nuestra region de rechazo, por lo que aceptamos H_0
+    #Error beta
+    HAinflacionCol = 3
+    KinflacionCol = 4 - z_alpha*SEinflacionCol
+    BetainflacionCol = pnorm((KinflacionCol - HAinflacionCol)/SEinflacionCol, lower.tail = FALSE)
+    
+  # EXPORTACIONES COL 
+  
+    # Histograma
+    hist(exportacionesCol, xlab = "Valor en millones de pesos", ylab = "Frecuencia", ylim = c(0,20), main = "Exportaciones de Colombia por trimestre")
+    # Diagrama de caja
+    boxplot(exportacionesCol, horizontal = TRUE, xlab = "Valor en millones de pesos", main = "Exportaciones de Colombia por trimestre")
+    # Intervalo de confianza del 95% para la media del valor de las exportaciones de Colombia por trimestre
+    SEexportacionesCol = SDexportacionesCol/sqrt(n)
+    LSexportacionesCol = MMexportacionesCol + z_alpha2*SEexportacionesCol
+    LIexportacionesCol = MMexportacionesCol - z_alpha2*SEexportacionesCol
+    
+  # EXPORTACIONES DE ESTADOS UNIDOS
+  
+    # Histograma
+    hist(exportacionesUSA, xlab = "Valor en millones de dolares", ylab = "Frecuencia", ylim = c(0,20), main = "Exportaciones de Estados Unidos por trimestre")
+    # Diagrama de caja
+    boxplot(exportacionesUSA, horizontal = TRUE, xlab = "Valor en millones de dolares", main = "Exportaciones de Estados Unidos por trimestre")
+    # Intervalo de confianza del 95% para la media del valor de las exportaciones de Estados Unidos por trimestre
+    SEexportacionesUSA = SDexportacionesUSA/sqrt(n)
+    LSexportacionesUSA = MMexportacionesUSA + z_alpha2*SEexportacionesUSA
+    LIexportacionesUSA = MMexportacionesUSA - z_alpha2*SEexportacionesUSA
+    
+  # IMPORTACIONES COLOMBIA
+  
+    # Histograma
+    hist(importacionesCol, xlab = "Valor en millones de pesos", ylab = "Frecuencia", ylim = c(0,20), main = "Importaciones de Colombia por trimestre")
+    # Diagrama de caja
+    boxplot(importacionesCol, horizontal = TRUE, xlab = "Valor en millones de pesos", main = "Importaciones de Colombia por trimestre")
+    # Intervalo de confianza del 95% para la media del valor de las importaciones de Colombia por trimestre
+    SEimportacionesCol = SDimportacionesCol/sqrt(n)
+    LSimportacionesCol = MMimportacionesCol + z_alpha2*SEimportacionesCol
+    LIimportacionesCol = MMimportacionesCol - z_alpha2*SEimportacionesCol
+    
+  # IMPORTACIONES USA
+  
+    # Histograma
+    hist(importacionesUSA, xlab = "Valor en millones de dolares", ylab = "Frecuencia", ylim = c(0,20), main = "Importaciones de Estados Unidos por trimestre")
+    # Diagrama de caja
+    boxplot(importacionesUSA, horizontal = TRUE, xlab = "Valor en millones de dolares", main = "Importaciones de Estados Unidos por trimestre")
+    #Intervalo de confianza del 95% para la media del PIB de Estados Unidos por trimestre
+    SEimportacionesUSA = SDimportacionesUSA/sqrt(n)
+    LSimportacionesUSA = MMimportacionesUSA + z_alpha2*SEimportacionesUSA
+    LIimportacionesUSA = MMimportacionesUSA - z_alpha2*SEimportacionesUSA
+    
+  # PIB COLOMBIA
+  
+    # Histograma
+    hist(pibCol, xlab = "Valor en millones de pesos", ylab = "Frecuencia", ylim = c(0,20), main = "PIB de Colombia por trimestre")
+    # Diagrama de caja
+    boxplot(pibCol, horizontal = TRUE, xlab = "Valor en millones de pesos", main = "PIB de Colombia por trimestre")
+    # Intervalo de confianza del 95% para la media del PIB de Colombia por trimestre
+    SEpibCol = SDpibCol/sqrt(n)
+    LSpibCol = MMpibCol + z_alpha2*SEpibCol
+    LIpibCol = MMpibCol - z_alpha2*SEpibCol
+    
+  # PIB USA
+  
+    # Histograma
+    hist(pibUSA, xlab = "Valor en millones de dolares", ylab = "Frecuencia", ylim = c(0,20), main = "PIB de Estados Unidos por trimestre")
+    # Diagrama de caja
+    boxplot(pibUSA, horizontal = TRUE, xlab = "Valor en millones de dolares", main = "PIB de Estados Unidos por trimestre")
+    #Intervalo de confianza del 95% para la media del PIB de Estados Unidos por trimestre
+    SEpibUSA = SDpibUSA/sqrt(n)
+    LSpibUSA = MMpibUSA + z_alpha2*SEpibUSA
+    LIpibUSA = MMpibUSA - z_alpha2*SEpibUSA
 
-# PIB COL
-hist(databaseactualizada$Pc, xlab = "Valor en millones de pesos", ylab = "Frecuencia", ylim = c(0,20), main = "PIB de Colombia por trimestre")
-
-# Importaciones COL
-hist(databaseactualizada$Imc, xlab = "Valor en millones de pesos", ylab = "Frecuencia", ylim = c(0,20), main = "Importaciones de Colombia por trimestre")
-
-# Exportaciones COL 
-hist(databaseactualizada$Ec, xlab = "Valor en millones de pesos", ylab = "Frecuencia", ylim = c(0,20), main = "Exportaciones de Colombia por trimestre")
-
-# DIAGRAMAS DE CAJA
-# Exportaciones COL
-boxplot(databaseactualizada$Ec, horizontal = TRUE, xlab = "Valor en millones de pesos", main = "Exportaciones de Colombia por trimestre")
-
-# Importaciones COL
-boxplot(databaseactualizada$Imc, horizontal = TRUE, xlab = "Valor en millones de pesos", main = "Importaciones de Colombia por trimestre")
-
-# PIB COL
-boxplot(databaseactualizada$Pc, horizontal = TRUE, xlab = "Valor en millones de pesos", main = "PIB de Colombia por trimestre")
-
-# Desempleo COL
-boxplot(databaseactualizada$Dc, horizontal = TRUE, xlab = "Porcentaje", main = "Desempleo de la población activa de Colombia por trimestre")
-
-# Importaciones USA 
-boxplot(databaseactualizada$Imu, horizontal = TRUE, xlab = "Valor en millones de dolares", main = "Importaciones de Estados Unidos por trimestre")
-
-# Exportaciones USA
-boxplot(databaseactualizada$Eu, horizontal = TRUE, xlab = "Valor en millones de dolares", main = "Exportaciones de Estados Unidos por trimestre")
-
-# PIB USA
-boxplot(databaseactualizada$Pu, horizontal = TRUE, xlab = "Valor en millones de dolares", main = "PIB de Estados Unidos por trimestre")
-
-# Inflación Colombia
-boxplot(databaseactualizada$Ic, horizontal = TRUE, xlab = "Porcentaje", main = "Inflación de Colombia por trimestre")
-
-#Modelos y plots
+#Modelos y diagramas de puntos
 #inflacion de colombia vs importaciones de colombia
-Ic_Imc = lm(databaseactualizada$Ic~databaseactualizada$Imc)
+Ic_Imc = lm(InflacionCol~importacionesCol)
 summary(Ic_Imc)
-plot(databaseactualizada$Imc, databaseactualizada$Ic, xlab = "Importaciones Colombia", ylab = "Inflacion Colombia")
+plot(importacionesCol, InflacionCol, xlab = "Importaciones Colombia", ylab = "Inflacion Colombia")
 
 #inflacion de colombia vs exportaciones de colombia
-Ic_Ec = lm(databaseactualizada$Ic~databaseactualizada$Ec)
+Ic_Ec = lm(InflacionCol~exportacionesCol)
 summary(Ic_Ec)
-plot(databaseactualizada$Ec, databaseactualizada$Ic, xlab = "Exortaciones Colombia", ylab = "Inflacion Colombia")
+plot(exportacionesCol, InflacionCol, xlab = "Exortaciones Colombia", ylab = "Inflacion Colombia")
 
 # Exportaciones de colombia vs importaciones de estados unidos
-Ex_Imu1 = lm(databaseactualizada$Ec[0:29]~databaseactualizada$Imu[0:29])
+Ex_Imu1 = lm(exportacionesCol[0:29]~importacionesUSA[0:29])
 summary(Ex_Imu1)
-plot(databaseactualizada$Imu[0:29], databaseactualizada$Ec[0:29], xlab = "Importaciones Estados Unidos en millones de dolares", ylab = "Exportaciones Colombia en millones de pesos", xlim = c(500, 2500), ylim = c(20000, 35000), main = "Entre 2005 y 2012") 
+plot(importacionesUSA[0:29], exportacionesCol[0:29], xlab = "Importaciones Estados Unidos en millones de dolares", ylab = "Exportaciones Colombia en millones de pesos", xlim = c(500, 2500), ylim = c(20000, 35000), main = "Entre 2005 y 2012") 
 
 # Exportaciones de colombia con importaciones de estados unidos
-Ex_Imu2 = lm(databaseactualizada$Ec[29:63]~databaseactualizada$Imu[29:63])
+Ex_Imu2 = lm(exportacionesCol[29:63]~importacionesUSA[29:63])
 summary(Ex_Imu2)
-plot( databaseactualizada$Imu[29:63], databaseactualizada$Ec[29:63],xlab = "Importaciones Estados Unidos en millones de dolares", ylab = "Exportaciones Colombia en millones de pesos", xlim = c(500, 2500), ylim = c(20000, 35000), main = "Entre 2012 y 2020") 
+plot(importacionesUSA[29:63], exportacionesCol[29:63],xlab = "Importaciones Estados Unidos en millones de dolares", ylab = "Exportaciones Colombia en millones de pesos", xlim = c(500, 2500), ylim = c(20000, 35000), main = "Entre 2012 y 2020") 
 
 # Importaciones de colombia con exportaciones de estados unidos
-Imc_Eu1 = lm(databaseactualizada$Eu[0:29]~databaseactualizada$Imc[0:29])
+Imc_Eu1 = lm(exportacionesUSA[0:29]~importacionesCol[0:29])
 summary(Imc_Eu1)
-plot(databaseactualizada$Eu[0:29], databaseactualizada$Imc[0:29], xlab = "Exportaciones Estados Unidos en millones de dolares", ylab = "Importaciones Colombia en millones de pesos", xlim = c(400,2000), ylim = c(15000, 55000), main = "Entre 2005 y 2012")
+plot(exportacionesUSA[0:29], importacionesCol[0:29], xlab = "Exportaciones Estados Unidos en millones de dolares", ylab = "Importaciones Colombia en millones de pesos", xlim = c(400,2000), ylim = c(15000, 55000), main = "Entre 2005 y 2012")
 
 # Importaciones de colombia con exportaciones de estados unidos
-Imc_Eu2 = lm(databaseactualizada$Eu[29:63]~databaseactualizada$Imc[29:63])
+Imc_Eu2 = lm(exportacionesUSA[29:63]~importacionesCol[29:63])
 summary(Imc_Eu2)
-plot(databaseactualizada$Eu[29:63], databaseactualizada$Imc[29:63], xlab = "Exportaciones Estados Unidos en millones de dolares", ylab = "Importaciones Colombia en millones de pesos", xlim = c(400,2000), ylim = c(15000, 55000), main = "Entre 2012 y 2020") 
+plot(exportacionesUSA[29:63], importacionesCol[29:63], xlab = "Exportaciones Estados Unidos en millones de dolares", ylab = "Importaciones Colombia en millones de pesos", xlim = c(400,2000), ylim = c(15000, 55000), main = "Entre 2012 y 2020") 
 
 # PIB de colombia con PIB de estados unidos
-Pc_Pu1 = lm(databaseactualizada$Pc[0:29]~databaseactualizada$Pu[0:29])
+Pc_Pu1 = lm(pibCol[0:29]~pibUSA[0:29])
 summary(Pc_Pu1)
-plot(databaseactualizada$Pu[0:29], databaseactualizada$Pc[0:29], xlab = "PIB Estados Unidos en millones de dolares", ylab = "PIB Colombia en millones de pesos", main = "Entre 2005 y 2012") 
+plot(pibUSA[0:29], pibCol[0:29], xlab = "PIB Estados Unidos en millones de dolares", ylab = "PIB Colombia en millones de pesos", main = "Entre 2005 y 2012") 
 
 # Scatterplot de PIB de colombia con PIB de estados unidos
-Pc_Pu2 = lm(databaseactualizada$Pc[29:63]~databaseactualizada$Pu[29:63])
+Pc_Pu2 = lm(pibCol[29:63]~pibUSA[29:63])
 summary(Pc_Pu2)
-plot(databaseactualizada$Pu[29:63], databaseactualizada$Pc[29:63], xlab = "PIB Estados Unidos en millones de dolares", ylab = "PIB Colombia en millones de pesos", main = "Entre 2012 y 2005") 
+plot(pibUSA[29:63], pibCol[29:63], xlab = "PIB Estados Unidos en millones de dolares", ylab = "PIB Colombia en millones de pesos", main = "Entre 2012 y 2005") 
