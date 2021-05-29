@@ -158,14 +158,18 @@ n = length(inflacionCol)
 
 #Modelos y diagramas de puntos
 #inflacion de colombia vs importaciones de colombia
-Ic_Imc = lm(InflacionCol~importacionesCol)
+Ic_Imc = lm(inflacionCol~importacionesCol)
 summary(Ic_Imc)
 plot(importacionesCol, InflacionCol, xlab = "Importaciones Colombia", ylab = "Inflacion Colombia")
 
 #inflacion de colombia vs exportaciones de colombia
-Ic_Ec = lm(InflacionCol~exportacionesCol)
+Ic_Ec = lm(inflacionCol[0:29]~exportacionesCol[0:29])
 summary(Ic_Ec)
-plot(exportacionesCol, InflacionCol, xlab = "Exortaciones Colombia", ylab = "Inflacion Colombia")
+plot(exportacionesCol[0:29], inflacionCol[0:29], xlab = "Exortaciones Colombia", ylab = "Inflacion Colombia")
+
+Ic_Ec = lm(inflacionCol[29:63]~exportacionesCol[29:63])
+summary(Ic_Ec)
+plot(exportacionesCol[29:63], inflacionCol[29:63], xlab = "Exortaciones Colombia", ylab = "Inflacion Colombia")
 
 # Exportaciones de colombia vs importaciones de estados unidos
 Ex_Imu1 = lm(exportacionesCol[0:29]~importacionesUSA[0:29])
@@ -178,12 +182,12 @@ summary(Ex_Imu2)
 plot(importacionesUSA[29:63], exportacionesCol[29:63],xlab = "Importaciones Estados Unidos en millones de dolares", ylab = "Exportaciones Colombia en millones de pesos", xlim = c(500, 2500), ylim = c(20000, 35000), main = "Entre 2012 y 2020") 
 
 # Importaciones de colombia con exportaciones de estados unidos
-Imc_Eu1 = lm(exportacionesUSA[0:29]~importacionesCol[0:29])
+Imc_Eu1 = lm(importacionesCol[0:29]~exportacionesUSA[0:29])
 summary(Imc_Eu1)
 plot(exportacionesUSA[0:29], importacionesCol[0:29], xlab = "Exportaciones Estados Unidos en millones de dolares", ylab = "Importaciones Colombia en millones de pesos", xlim = c(400,2000), ylim = c(15000, 55000), main = "Entre 2005 y 2012")
 
 # Importaciones de colombia con exportaciones de estados unidos
-Imc_Eu2 = lm(exportacionesUSA[29:63]~importacionesCol[29:63])
+Imc_Eu2 = lm(importacionesCol[29:63]~exportacionesUSA[29:63])
 summary(Imc_Eu2)
 plot(exportacionesUSA[29:63], importacionesCol[29:63], xlab = "Exportaciones Estados Unidos en millones de dolares", ylab = "Importaciones Colombia en millones de pesos", xlim = c(400,2000), ylim = c(15000, 55000), main = "Entre 2012 y 2020") 
 
